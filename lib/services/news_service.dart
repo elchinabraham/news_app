@@ -16,8 +16,6 @@ class NewsService {
         return News.fromJson(entry.key, entry.value);
       }).toList();
 
-      print(response.body);
-
       return newsList;
     } else {
       print('Request failed with status: ${response.statusCode}.');

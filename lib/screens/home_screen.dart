@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/models/news.dart';
-import 'package:news_app/services/news_service.dart';
-
-import '../widgets/news_item.dart';
+import 'package:news_app/widgets/news_list.dart';
+import 'package:news_app/widgets/settings.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,79 +10,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _NewsListState extends State<HomeScreen> {
-  bool isSearching = false;
-  final FocusNode searchFocusNode = FocusNode();
-
-  final ScrollController _scrollController = ScrollController();
-  List<News> items = [];
-  bool isLoading = false;
-  bool isAllLoaded = false;
   int currentPageIndex = 0;
-
-  void _getNews() async {
-    final newsService = NewsService();
-    final _items = await newsService.getNews();
-    setState(() {
-      items = _items;
-    });
-  }
 
   @override
   void initState() {
-    _getNews();
     super.initState();
+  }
+
+  Widget selectedPage() {
+    if (currentPageIndex == 1) {
+      return const Settings();
+    } else if (currentPageIndex == 2) {
+      return const NewsList(isFavorite: true);
+    }
+    return const NewsList(isFavorite: false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: isSearching
-            ? TextField(
-                focusNode: searchFocusNode,
-                style: const TextStyle(
-                  fontSize: 20,
-                ),
-                decoration: const InputDecoration(
-                  hintText: "Searching...",
-                  icon: Icon(
-                    Icons.search,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 3, horizontal: 2),
-                  hintStyle: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                onSubmitted: (e) {})
-            : const Text('News'),
-        actions: <Widget>[
-          isSearching
-              ? IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      isSearching = !isSearching;
-                    });
-                  })
-              : IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      isSearching = !isSearching;
-                      searchFocusNode.requestFocus();
-                    });
-                  }),
-        ],
-      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.yellow[600],
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
@@ -93,22 +44,18 @@ class _NewsListState extends State<HomeScreen> {
             label: 'Ana səhifə',
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite),
+            selectedIcon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
+            label: 'Tənzimləmələr',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite_outline),
             label: 'Sevimlilər',
           ),
         ],
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: NewsItem(
-              title: items[index].title,
-            ),
-          );
-        },
-      ),
+      body: selectedPage(),
     );
   }
 }

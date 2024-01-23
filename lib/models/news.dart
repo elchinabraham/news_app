@@ -25,4 +25,12 @@ class News {
       id: newsId,
     );
   }
+
+  String get getDate {
+    return createTimeUtc.substring(0, 10);
+  }
+
+  String get getTime {
+    return createTimeUtc.substring(11);
+  }
 }
