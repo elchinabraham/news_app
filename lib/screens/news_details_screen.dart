@@ -69,7 +69,7 @@ class NewsDetailsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Divider(thickness: 0.7),
+                    const Divider(thickness: 0.3),
                     ListTile(
                       title: Padding(
                         padding: const EdgeInsets.only(bottom: 10),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/services/my_database.dart';
 
 import '../models/news.dart';
 import '../services/news_service.dart';
@@ -17,16 +18,21 @@ class NewsList extends StatefulWidget {
 }
 
 class _NewsListState extends State<NewsList> {
-  bool isSearching = false;
   final FocusNode searchFocusNode = FocusNode();
-
   final ScrollController _scrollController = ScrollController();
+
   List<News> items = [];
+
   bool isLoading = false;
   bool isAllLoaded = false;
+  bool isSearching = false;
+
   int currentPageIndex = 0;
 
   void _getNews(String searchText) async {
+    final s = MyDatabase();
+    s.fetchPaginatedData(3, '-Nop9y4q8AuvHkaUFkKW');
+
     setState(() {
       isLoading = true;
     });
@@ -34,25 +40,34 @@ class _NewsListState extends State<NewsList> {
     final newsService = NewsService();
     final _items = await newsService.getNews();
 
-    setState(() {
-      if (searchText.isNotEmpty) {
-        items = _items
-            .where((news) =>
-                news.title.toLowerCase().contains(searchText.toLowerCase()) ||
-                news.source.toLowerCase().contains(searchText.toLowerCase()))
-            .toList();
-      } else {
-        items = _items;
-      }
+    if (mounted) {
+      setState(() {
+        if (searchText.isNotEmpty) {
+          items = _items
+              .where((news) =>
+                  news.title.toLowerCase().contains(searchText.toLowerCase()) ||
+                  news.source.toLowerCase().contains(searchText.toLowerCase()))
+              .toList();
+        } else {
+          items = _items;
+        }
 
-      isLoading = false;
-    });
+        isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
     _getNews("");
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchFocusNode.dispose();
+    _scrollController.dispose();
   }
 
   @override

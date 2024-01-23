@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "474271435101",
+    "firebase_url": "https://news-service-da87e-default-rtdb.firebaseio.com",
+    "project_id": "news-service-da87e",
+    "storage_bucket": "news-service-da87e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474271435101:android:75b1a92cd629cd75fd40b4",
+        "android_client_info": {
+          "package_name": "com.example.news_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHHH_L6XM8norWYlHCf_rLq11As0MfQps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
