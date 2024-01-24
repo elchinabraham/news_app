@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/favorite_button.dart';
+
 class NewsDetailsScreen extends StatelessWidget {
   const NewsDetailsScreen({
     super.key,
+    required this.newId,
     required this.title,
     required this.description,
     required this.date,
@@ -11,6 +14,7 @@ class NewsDetailsScreen extends StatelessWidget {
     required this.source,
   });
 
+  final String newId;
   final String title;
   final String description;
   final String date;
@@ -51,21 +55,7 @@ class NewsDetailsScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.favorite_border,
-                                  color: Colors.red,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  'Sevimlilər',
-                                ),
-                              ],
-                            ),
-                          ),
+                          FavoriteButton(newsId: newId),
                         ],
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/localDatabase/local_storage.dart';
 import 'package:news_app/services/my_database.dart';
 
 import '../models/news.dart';
@@ -20,6 +21,7 @@ class NewsList extends StatefulWidget {
 class _NewsListState extends State<NewsList> {
   final FocusNode searchFocusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
+  String favorites = '';
 
   List<News> items = [];
 
@@ -30,8 +32,8 @@ class _NewsListState extends State<NewsList> {
   int currentPageIndex = 0;
 
   void _getNews(String searchText) async {
-    final s = MyDatabase();
-    s.fetchPaginatedData(3, '-Nop9y4q8AuvHkaUFkKW');
+    // final s = MyDatabase();
+    // s.fetchPaginatedData(3, '-Nop9y4q8AuvHkaUFkKW');
 
     setState(() {
       isLoading = true;
@@ -57,9 +59,15 @@ class _NewsListState extends State<NewsList> {
     }
   }
 
+  void _getFavorites() async {
+    final localStorage = LocalStorage();
+    favorites = await localStorage.getFavorite();
+  }
+
   @override
   void initState() {
     _getNews("");
+    _getFavorites();
     super.initState();
   }
 
@@ -74,10 +82,11 @@ class _NewsListState extends State<NewsList> {
   Widget build(BuildContext context) {
     var filteredItems = items;
 
+    _getFavorites();
+
     if (widget.isFavorite) {
-      filteredItems = filteredItems
-          .where((news) => news.id == "-Nop9y4q8AuvHkaUFkKW")
-          .toList();
+      filteredItems =
+          filteredItems.where((news) => favorites.contains(news.id)).toList();
     }
 
     return Scaffold(
@@ -97,7 +106,10 @@ class _NewsListState extends State<NewsList> {
                 onSubmitted: (e) {
                   _getNews(e);
                 })
-            : const Text(' Ana Səhifə'),
+            : Text(
+                widget.isFavorite ? ' Sevimlilər' : ' Ana Səhifə',
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
         actions: <Widget>[
           isSearching
               ? IconButton(
@@ -124,6 +136,7 @@ class _NewsListState extends State<NewsList> {
               itemCount: filteredItems.length,
               itemBuilder: (context, index) {
                 return NewsItem(
+                  newId: filteredItems[index].id,
                   title: filteredItems[index].title,
                   imageUrl: filteredItems[index].imageUrl,
                   date: filteredItems[index].getDate,

@@ -4,6 +4,7 @@ import 'package:news_app/screens/news_details_screen.dart';
 class NewsItem extends StatelessWidget {
   const NewsItem({
     super.key,
+    required this.newId,
     required this.title,
     required this.imageUrl,
     required this.date,
@@ -12,6 +13,7 @@ class NewsItem extends StatelessWidget {
     required this.description,
   });
 
+  final String newId;
   final String title;
   final String imageUrl;
   final String date;
@@ -117,6 +119,7 @@ class NewsItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => NewsDetailsScreen(
+              newId: newId,
               title: title,
               date: date,
               time: time,

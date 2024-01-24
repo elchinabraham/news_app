@@ -10,7 +10,7 @@ class MyDatabase {
       Map<dynamic, dynamic> values =
           dataSnapshot.value as Map<dynamic, dynamic>;
       values.forEach((key, values) {
-        print('title: ${values['title']}');
+        // print('title: ${values['title']}');
       });
     });
   }
@@ -28,8 +28,8 @@ class MyDatabase {
       Map<dynamic, dynamic> values =
           dataSnapshot.value as Map<dynamic, dynamic>;
       values.forEach((key, values) {
-        print('id: $key');
-        print('title: ${values['title']}');
+        // print('id: $key');
+        // print('title: ${values['title']}');
         // print('description: ${values['description']}');
         // print('imageUrl: ${values['imageUrl']}');
         // print('createTimeUtc: ${values['createTimeUtc']}');
